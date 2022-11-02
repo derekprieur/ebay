@@ -2,10 +2,13 @@ import Header from "../components/Header"
 import { useActiveListings, useContract, MediaRenderer } from '@thirdweb-dev/react'
 import { ListingType } from "@thirdweb-dev/sdk"
 import { BanknotesIcon, ClockIcon } from '@heroicons/react/24/outline'
+import Link from "next/link"
+import { useRouter } from "next/router"
 
 const Home = () => {
   const { contract } = useContract(process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT, 'marketplace')
   const { data: listings, isLoading: loadingListings } = useActiveListings(contract)
+  const router = useRouter()
   console.log(listings)
   return (
     <div className="">
@@ -16,7 +19,7 @@ const Home = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 mx-auto">
             {listings?.map((listing) => (
-              <div key={listing.id} className='flex flex-col card hover:bg-gray-100 hover:scale-105 transition-all duration-150 ease-out'>
+              <div onClick={() => router.push(`/listing/${listing.id}`)} key={listing.id} className='flex flex-col card hover:bg-gray-100 hover:scale-105 transition-all duration-150 ease-out'>
                 <div className=" flex-1 flex flex-col pb-2 items-center">
                   <MediaRenderer className=" w-44" src={listing.asset.image} />
                 </div>
